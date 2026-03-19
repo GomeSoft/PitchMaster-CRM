@@ -14,6 +14,10 @@
                         class="p-1.5 rounded text-slate-400 hover:text-primary hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
                         <span class="material-symbols-outlined text-lg">grid_view</span>
                     </button>
+                    <a href="{{ route('teams.create') }}" class="flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-800 text-sm font-bold text-slate-600 dark:text-slate-300 hover:border-primary hover:text-primary transition-all">
+                        <span class="material-symbols-outlined text-lg">add</span>
+                        Add Team
+                    </a>
                 </div>
             </div>
 

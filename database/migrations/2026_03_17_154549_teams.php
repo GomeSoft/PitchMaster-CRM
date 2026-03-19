@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('league_id')->constrained('leagues', 'league_id')->onDelete('cascade');
             $table->string('name');
             $table->string('badge')->nullable();
-            $table->date('founded_date');
+            $table->integer('founded_date');
             $table->string('stadium')->nullable();
             $table->timestamps();
         });

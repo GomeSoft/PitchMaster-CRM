@@ -15,6 +15,12 @@
                         class="p-1.5 rounded text-slate-400 hover:text-primary hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
                         <span class="material-symbols-outlined text-lg">grid_view</span>
                     </button>
+                    <a href="{{ route('leagues.create') }}">
+                        <button
+                            class="p-1.5 rounded text-slate-400 hover:text-primary hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                            <span class="material-symbols-outlined text-lg">Add League</span>
+                        </button>
+                    </a>
                 </div>
             </div>
 
