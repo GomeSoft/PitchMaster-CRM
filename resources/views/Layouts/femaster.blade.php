@@ -63,16 +63,39 @@
                         <a class="text-sm font-semibold hover:text-primary transition-colors"
                             href="{{ route('teams.index') }}">Teams</a>
                     </nav>
-                    <div class="flex gap-3">
-                        <button
-                            class="flex min-w-[84px] cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm font-bold transition-all hover:bg-slate-200">
-                            <span>Login</span>
-                        </button>
-                        <button
-                            class="flex min-w-[84px] cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-primary text-background-dark text-sm font-bold transition-all hover:opacity-90">
-                            <span>Register</span>
-                        </button>
-                    </div>
+                    @if (Route::has('login'))
+                        <div class="flex gap-3">
+                            @auth
+                                @if (Auth::user()->role ==  \App\Models\User::TYPE_ADMIN)
+                                    <a href="{{ route('dashboard.index') }}">
+                                        <button
+                                            class="flex min-w-[84px] cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-primary text-background-dark text-sm font-bold transition-all hover:opacity-90">
+                                            <span>Dashboard</span>
+                                        </button>
+                                    </a>
+                                @endif
+
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button
+                                        class="flex min-w-[84px] cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-primary text-background-dark text-sm font-bold transition-all hover:opacity-90">
+                                        <span>Logout</span>
+                                    </button>
+                                </form>
+                            @else
+                                <a href="{{ route('login') }}"
+                                    class="flex min-w-[84px] cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm font-bold transition-all hover:bg-slate-200">
+                                    <span>Login</span>
+                                </a>
+                                @if (Route::has('register'))
+                                    <a href="{{ route('register') }}"
+                                        class="flex min-w-[84px] cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-primary text-background-dark text-sm font-bold transition-all hover:opacity-90">
+                                        <span>Register</span>
+                                    </a>
+                                @endif
+                            @endauth
+                        </div>
+                    @endif
                 </div>
             </header>
 

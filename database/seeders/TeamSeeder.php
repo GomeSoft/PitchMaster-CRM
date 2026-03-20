@@ -17,6 +17,7 @@ class TeamSeeder extends Seeder
         DB::table("teams")->insert([
             "name" => Str::random(100),
             "founded_date" => Str::random(100),
+            "country" => Str::random(100),
         ]);
     }
 }

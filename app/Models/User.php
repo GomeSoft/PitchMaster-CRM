@@ -13,6 +13,9 @@ class User extends Authenticatable
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
+    CONST TYPE_ADMIN = "admin";
+    CONST TYPE_USER = "user";
+
     /**
      * The attributes that are mass assignable.
      *

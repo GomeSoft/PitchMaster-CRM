@@ -15,7 +15,9 @@ class LeagueSeeder extends Seeder
     public function run(): void
     {
         DB::table("leagues")->insert([
-            "name" => Str::random(100),
+            "league_id" => random_int(1, 100),
+            "name" => Str::random(10),
+            "country" => Str::random(10),
         ]);
     }
 }

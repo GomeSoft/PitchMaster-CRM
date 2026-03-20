@@ -9,4 +9,8 @@ class UtilController extends Controller
     public function index(){
         return view("utils.home");
     }
+
+    public function register(){
+        return view("auth.register");
+    }
 }

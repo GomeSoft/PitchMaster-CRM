@@ -10,6 +10,25 @@ class TeamsController extends Controller
 {
     public function index(){
         $teams = DB::table("teams")->get();
+
+        $search = request()->query('search');
+        $query = DB::table('teams');
+
+        if (!empty(request()->query('league_id'))) {
+            $query->where('league_id', request()->query('league_id'));
+        }
+
+        if ($search && $search !== 'null') {
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%')
+                  ->orWhere('country', 'like', '%' . $search . '%')
+                  ->orWhere('stadium', 'like', '%' . $search . '%');
+            });
+        }
+
+        $teams = $query->get();
+
+
         return view("teams.index", compact("teams"));
     }
 
@@ -38,6 +57,39 @@ class TeamsController extends Controller
             //'badge' => $request->badge,
         ]);
 
-        return redirect()->route("teams.index")->with("success", "Team created successfully");
+        return redirect()->route("teams.index")->with("message", "Team created successfully");
+    }
+
+    public function delete($id){
+        DB::table('teams')->where('id', $id)->delete();
+        return redirect()->route("teams.index")->with("message", "Team deleted successfully");
+    }
+
+    public function viewUpdate($id){
+        $team = DB::table("teams")->where("id", $id)->first();
+        $leagues = DB::table("leagues")->get();
+        return view("teams.edit", compact("team", "leagues"));
+    }
+
+    public function update(Request $request, $id){
+        $request->validate([
+            "league_id"=> "required",
+            'name' => 'required|string|max:50',
+            'country' => 'required|string|max:50',
+            'stadium' => 'required|string|max:50',
+            'founded_date' => 'required|integer|min:1800|max:2099',
+            ///'badge' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        DB::table('teams')->where('id', $id)->update([
+            'league_id'=> $request->league_id,
+            'name' => $request->name,
+            'country' => $request->country,
+            'stadium' => $request->stadium,
+            'founded_date' => $request->founded_date,
+            //'badge' => $request->badge,
+        ]);
+
+        return redirect()->route("teams.index")->with("message", "Team updated successfully");
     }
 }
