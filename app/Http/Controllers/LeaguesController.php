@@ -22,9 +22,9 @@ class LeaguesController extends Controller
         }
 
         if ($search && $search !== 'null') {
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', '%' . $search . '%')
-                  ->orWhere('country', 'like', '%' . $search . '%');
+                    ->orWhere('country', 'like', '%' . $search . '%');
             });
         }
 
@@ -45,38 +45,45 @@ class LeaguesController extends Controller
         $request->validate([
             'name' => 'required|string|max:50',
             'country' => 'required|string|max:50',
-            //'logo' => 'nullable|image|max:2048' ,
-            
         ]);
+        $logoPath = null;
+        if ($request->hasFile('logo')) {
+            $logoPath = $request->file('logo')->store('logos', 'public');
+        }
         DB::table('leagues')->insert([
             'name' => $request->name,
             'country' => $request->country,
-            //'logo' => $request->logo,
+            'logo' => $logoPath,
         ]);
         return redirect()->route("leagues.index")->with("message", "League created successfully");
     }
 
-    public function delete($id){
+    public function delete($id)
+    {
         DB::table('leagues')->where('league_id', $id)->delete();
         return redirect()->route("leagues.index")->with("message", "League deleted successfully");
     }
 
-    public function viewUpdate($id){
+    public function viewUpdate($id)
+    {
         $league = DB::table('leagues')->where('league_id', $id)->first();
         return view("leagues.edit", compact("league"));
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $request->validate([
             'name' => 'required|string|max:50',
             'country' => 'required|string|max:50',
-            //'logo' => 'nullable|image|max:2048' ,
-            
         ]);
+        $logoPath = null;
+        if ($request->hasFile('logo')) {
+            $logoPath = $request->file('logo')->store('logos', 'public');
+        }
         DB::table('leagues')->where('league_id', $id)->update([
             'name' => $request->name,
             'country' => $request->country,
-            //'logo' => $request->logo,
+            'logo' => $logoPath,
         ]);
         return redirect()->route("leagues.index")->with("message", "League updated successfully");
     }
