@@ -40,3 +40,8 @@ Route::post('/users/{user}/make-admin', [DashboardController::class, 'makeAdmin'
 Route::post('/users/{user}/remove-admin', [DashboardController::class, 'removeAdmin'])->name('users.remove-admin')->middleware('auth');
 //Rota para deletar user 
 Route::delete('/users/{user}/delete', [DashboardController::class, 'destroy'])->name('users.destroy')->middleware('auth');
+
+//Rota de fallback
+Route::fallback(function () {
+    return view('fallback.fallback');
+});

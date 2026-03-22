@@ -44,14 +44,15 @@
                             </button>
                         </form>
                     </div>
-                    @if (Auth::user()->role ==  \App\Models\User::TYPE_ADMIN)
-                        <a href="{{ route('leagues.create') }}"
-                            class="flex items-center justify-center gap-2 h-10 px-5 rounded-lg bg-primary text-background-dark text-sm font-bold shadow-md shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all w-full sm:w-auto">
-                            <span class="material-symbols-outlined text-lg">add_circle</span>
-                            Add League
-                        </a>
-                    @endif
-
+                    @auth
+                        @if (Auth::user()->role == \App\Models\User::TYPE_ADMIN)
+                            <a href="{{ route('leagues.create') }}"
+                                class="flex items-center justify-center gap-2 h-10 px-5 rounded-lg bg-primary text-background-dark text-sm font-bold shadow-md shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all w-full sm:w-auto">
+                                <span class="material-symbols-outlined text-lg">add_circle</span>
+                                Add League
+                            </a>
+                        @endif
+                    @endauth
                 </div>
 
             </div>
@@ -67,11 +68,14 @@
                             <th
                                 class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest text-center w-32">
                                 Teams</th>
-                            @if (Auth::user()->role ==  \App\Models\User::TYPE_ADMIN)
-                                <th
-                                    class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest text-right w-24">
-                                    Actions</th>
-                            @endif
+                            @auth
+
+                                @if (Auth::user()->role == \App\Models\User::TYPE_ADMIN)
+                                    <th
+                                        class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest text-right w-24">
+                                        Actions</th>
+                                @endif
+                            @endauth
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-primary/5">
@@ -80,7 +84,7 @@
                                 <td class="px-6 py-4">
                                     <div
                                         class="bg-slate-50 dark:bg-slate-900 p-1 rounded-full w-12 h-12 flex items-center justify-center border border-primary/5">
-                                        <span class="material-symbols-outlined text-primary">{{ $league->logo }}</span>
+                                        <img src="{{ $league->logo ? asset('storage/' . $league->logo) : asset('storage/logos/nophoto.png') }}" alt="{{ $league->name }} Logo" class="w-full h-full object-contain">
                                     </div>
                                 </td>
                                 <td class="px-6 py-4">
@@ -100,18 +104,19 @@
                                         {{ $totalTeams }}
                                     </span>
                                 </td>
-                                @if (Auth::user()->role ==  \App\Models\User::TYPE_ADMIN)
-                                    <td class="px-6 py-4 text-right">
-                                        <a href="{{ route('leagues.delete', $league->league_id) }}"
-                                            class="p-2 rounded-lg text-slate-400 hover:text-primary hover:bg-primary/10 transition-all focus:outline-none focus:ring-2 focus:ring-primary/50">
-                                            <span class="material-symbols-outlined">delete</span>
-                                        </a>
-                                        <a href="{{ route('leagues.update', $league->league_id) }}"
-                                            class="p-2 rounded-lg text-slate-400 hover:text-primary hover:bg-primary/10 transition-all focus:outline-none focus:ring-2 focus:ring-primary/50">
-                                            <span class="material-symbols-outlined">edit</span>
-                                        </a>
-                                @endif
-
+                                @auth
+                                    @if (Auth::user()->role == \App\Models\User::TYPE_ADMIN)
+                                        <td class="px-6 py-4 text-right">
+                                            <a href="{{ route('leagues.delete', $league->league_id) }}"
+                                                class="p-2 rounded-lg text-slate-400 hover:text-primary hover:bg-primary/10 transition-all focus:outline-none focus:ring-2 focus:ring-primary/50">
+                                                <span class="material-symbols-outlined">delete</span>
+                                            </a>
+                                            <a href="{{ route('leagues.update', $league->league_id) }}"
+                                                class="p-2 rounded-lg text-slate-400 hover:text-primary hover:bg-primary/10 transition-all focus:outline-none focus:ring-2 focus:ring-primary/50">
+                                                <span class="material-symbols-outlined">edit</span>
+                                            </a>
+                                    @endif
+                                @endauth
                             </tr>
                         @endforeach
                     </tbody>
